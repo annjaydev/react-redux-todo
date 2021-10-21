@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import './AddItem.css';
 import { useDispatch } from 'react-redux';
-import { fetchManyTasksAction } from '../store';
-import axios from 'axios';
-
-const baseURL = 'http://localhost:8000/';
+import { addTask } from '../store/asyncActions/tasks';
+import './AddItem.css';
 
 export const AddItem = () => {
   const [text, setText] = useState('');
@@ -12,12 +9,8 @@ export const AddItem = () => {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-
-    axios.post(`${baseURL}createTask`, { text, isCheck: false })
-      .then(res => {
-        dispatch(fetchManyTasksAction(res.data));
-        setText('');
-      });
+    dispatch(addTask(text, false));
+    setText('');
   }
 
   return (

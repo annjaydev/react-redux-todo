@@ -1,28 +1,16 @@
-import { createStore} from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { taskReducer } from './reducers/taskReducer';
+import { editReducer } from './reducers/editReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
-const defaultState = {
-  tasks: [],
-  editId: null
-};
+const rootReducer = combineReducers({
+  tasks: taskReducer,
+  editId: editReducer
+});
 
-const FETCH_MANY_TASKS = 'FETCH_MANY_TASKS';
-const EDIT_ID = 'EDIT_ID';
+export const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
-export const taskReducer = (state = defaultState, action) => {
-  switch (action.type) {
-    case FETCH_MANY_TASKS: 
-      return {...state, tasks: action.payload};
-
-    case EDIT_ID:
-      return {...state, editId: action.payload};
-
-    default:
-      return state;
-  }
-}
-
-export const store = createStore(taskReducer, composeWithDevTools());
-
-export const fetchManyTasksAction = (payload) => ({type: FETCH_MANY_TASKS, payload});
-export const editIdAction = (payload) => ({type: EDIT_ID, payload});

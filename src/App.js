@@ -5,18 +5,17 @@ import { AddItem } from './components/AddItem';
 import { Item } from './components/Item';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchManyTasksAction } from './store';
+import { getAllTasks } from './store/asyncActions/tasks';
 
 const baseURL = 'http://localhost:8000/';
 
 export const App = () => {
 
   const dispatch = useDispatch();
-  const tasks = useSelector(state => state.tasks);
+  const tasks = useSelector(state => state.tasks.tasks);
 
   useEffect(() => {
-    axios.get(`${baseURL}allTasks`)
-    .then(res => dispatch(fetchManyTasksAction(res.data)));
+    dispatch(getAllTasks());
   }, []);
 
   return (
